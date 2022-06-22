@@ -1,0 +1,27 @@
+﻿@page "/"
+@using System
+@using System.IO
+@using Microsoft.JSInterop
+@inject IJSRuntime _js
+
+
+@inject IJSRuntime JS
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+
+	public async Task downloadCSV()
+	{
+		var filestream = new MemoryStream();
+		DateTime date = DateTime.Now;
+		string filename = "custom" + "-" + date.ToString("yyyy-MM-dd-HH-mm-ss") + "-CSV.txt";
+		using var streamref = new DotNetStreamReference(stream: filestream);
+		await JS.InvokeVoidAsync("downloadFileFromStream", filename, streamref);
+
+	}
+}
